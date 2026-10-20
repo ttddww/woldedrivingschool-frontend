@@ -35,7 +35,7 @@ export default function Payment() {
   }, [])
 
 
-  const selected = courses.find((p) => p.id === selectedId) ?? courses[0]
+  const selected = courses?.find((p) => p.id === selectedId) ?? courses[0]
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
