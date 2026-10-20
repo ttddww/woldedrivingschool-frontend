@@ -19,9 +19,9 @@ export default function Register() {
   const [programs, setPrograms] = useState<Program[]>([]);
 
   useEffect(() => {
-    api<{ programs: Program[] }>("/api/programs")
+    api<{ courses: Program[] }>("/api/courses")
       .then((data) => {
-        setPrograms(data.programs);
+        setPrograms(data.courses);
       })
       .catch(() => {
         setError("Unable to load programs. Please try again.");
