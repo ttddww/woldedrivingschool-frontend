@@ -4,18 +4,19 @@ import PageHero from '../components/PageHero'
 import { api } from '../api'
 import { useAuth } from '../context/AuthContext'
 
-type Program = {
-  id: number
+type course = {
+  id: string
   name: string
-  priceCents: number
+  price: number
   currency: string
+  includes: string[]
 }
 
 export default function Payment() {
   const { user } = useAuth()
-  const [programs, setPrograms] = useState<Program[]>([])
-  const [selectedId, setSelectedId] = useState<number | null>(
-    user?.programId ? Number(user.programId) : null,
+  const [courses, setCourses] = useState<course[]>([])
+  const [selectedId, setSelectedId] = useState<string | null>(
+    user?.programId ? String(user.programId) : null,
   )
   const [amountType, setAmountType] = useState('deposit')
   const [error, setError] = useState<string | null>(null)
@@ -24,17 +25,17 @@ export default function Payment() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    api<{ programs: Program[] }>('/api/programs')
+    api<{ courses: course[] }>('/api/courses')
       .then((data) => {
-        console.log('Fetched programs:', data.programs)
-        setPrograms(data.programs)
-        if (!selectedId && data.programs[0]) setSelectedId(data.programs[0].id)
+        console.log('Fetched courses:', data.courses)
+        setCourses(data.courses)
+        if (!selectedId && data.courses[0]) setSelectedId(data.courses[0].id)
       })
-      .catch(() => setError('Unable to load programs. Please try again.'))
+      .catch(() => setError('Unable to load courses. Please try again.'))
   }, [])
 
 
-  const selected = programs.find((p) => p.id === selectedId) ?? programs[0]
+  const selected = courses.find((p) => p.id === selectedId) ?? courses[0]
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -112,12 +113,12 @@ export default function Payment() {
               <select
                 name="programId"
                 value={selectedId ?? ''}
-                onChange={(e) => setSelectedId(Number(e.target.value))}
+                onChange={(e) => setSelectedId(e.target.value)}
                 required
               >
-                {programs.map((p) => (
+                {courses.map((p) => (
                   <option key={p.id} value={p.id}>
-                    {p.name} — ${(p.priceCents / 100).toFixed(2)}
+                    {p.name} — ${p.price.toFixed(2)}
                   </option>
                 ))}
               </select>
