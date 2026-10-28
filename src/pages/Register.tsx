@@ -3,6 +3,8 @@ import { api } from "../api";
 import { Link, useNavigate } from "react-router-dom";
 import PageHero from "../components/PageHero";
 import { useAuth } from "../context/AuthContext";
+import { ClipLoader } from "react-spinners";
+
 
 type Program = {
   id: number;
@@ -276,7 +278,7 @@ export default function Register() {
             </label>
 
             <button className="btn btn-gold" type="submit" disabled={loading}>
-              {loading ? "Creating account…" : "Create account"}
+              {loading ? <ClipLoader size={20} /> : null} {loading ? 'Creating account…' : 'Create account'}
             </button>
 
             <p className="meta">
