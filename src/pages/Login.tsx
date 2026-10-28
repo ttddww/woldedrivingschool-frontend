@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import PageHero from '../components/PageHero'
 import { useAuth } from '../context/AuthContext'
+import {ClipLoader} from 'react-spinners'
 
 export default function Login() {
   const { login } = useAuth()
@@ -32,7 +33,7 @@ export default function Login() {
             <label>Email<input type="email" name="email" required /></label>
             <label>Password<input type="password" name="password" required /></label>
             <button className="btn btn-gold" type="submit" disabled={loading}>
-              {loading ? 'Logging in...' : 'Log in'}
+              {loading ? <ClipLoader size={20} /> : null} {loading ? 'Loading' : null} {loading ? null : 'Log in'}
             </button>
             <p className="meta">New student? <Link to="/register">Create an account</Link></p>
           </form>
