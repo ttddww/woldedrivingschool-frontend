@@ -7,11 +7,14 @@ export default function Login() {
   const { login } = useAuth()
   const navigate = useNavigate()
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setLoading(true)
     const data = new FormData(e.currentTarget)
     const err = await login(String(data.get('email')), String(data.get('password')))
+    setLoading(false)
     if (err) {
       setError(err)
       return
@@ -28,7 +31,9 @@ export default function Login() {
             {error && <div className="alert error">{error}</div>}
             <label>Email<input type="email" name="email" required /></label>
             <label>Password<input type="password" name="password" required /></label>
-            <button className="btn btn-gold" type="submit">Log in</button>
+            <button className="btn btn-gold" type="submit" disabled={loading}>
+              {loading ? 'Logging in...' : 'Log in'}
+            </button>
             <p className="meta">New student? <Link to="/register">Create an account</Link></p>
           </form>
         </div>
